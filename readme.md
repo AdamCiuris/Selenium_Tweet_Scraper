@@ -1,6 +1,6 @@
 <h3>Introduction</h3>
 
-This is a twitter tweet scraper that uses selenium. There are better ways to scrape twitter, but I am using this to learn
+This is a twitter tweet scraper that uses Selenium. There are better ways to scrape twitter, but I am using this to learn
  Selenium as I will need it for testing and content not available through an API.
 
 If you're looking to scrape twitter you would be better served making a curl request through their API.

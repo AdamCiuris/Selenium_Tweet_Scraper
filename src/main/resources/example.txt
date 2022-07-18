@@ -1,0 +1,4 @@
+You must delete this line and fill in below. Then, rename the file to .env
+gmail_login=
+gmail_password=
+account_to_scrape=
