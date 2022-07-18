@@ -10,6 +10,6 @@ If you're looking to scrape twitter you would be better served making a curl req
 Provide a google account that you have a twitter account set up for in /src/main/java/resources in a file named ".env". 
 Name the account name you would like to scrape there, too.
 
-Tweet content will be saved to resources.
+Tweet content will be saved to output.
 
 note to self: put a download link to jar on personal site
