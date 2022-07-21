@@ -1,10 +1,7 @@
 package org.AdamCiuris;
 
 import io.github.cdimascio.dotenv.Dotenv;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -39,8 +36,15 @@ public class tweetScraper {
 
             for (WebElement t :
                     we) {
-                String bind = t.getText();
-                if (tweetSet.add(t) && !tweetTextSet.add(t.getText()))
+                try {
+                    String bind = t.getText();
+                } catch (StaleElementReferenceException sERE) {
+                    we = timeline.findElements(By.xpath("//div[@data-testid='tweetText']"));
+                    continue; // retry this set of tweets, don't scroll
+                }
+
+
+                if (tweetSet.add(t) && !tweetTextSet.add(t.getText())) // debug TODO: remove
                 {
                     failcount++;
                 }

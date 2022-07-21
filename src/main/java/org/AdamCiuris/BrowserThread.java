@@ -31,8 +31,8 @@ public class BrowserThread {
             .load();
 
     class Initialize implements Runnable {
-        private static Lock loopLock = new ReentrantLock();
-        private static Condition reachedTwitterHomePage = loopLock.newCondition();
+//        private static Lock loopLock = new ReentrantLock();
+//        private static Condition reachedTwitterHomePage = loopLock.newCondition();
         /**
          * Instantiates webdriver.
          *
@@ -43,7 +43,7 @@ public class BrowserThread {
         }
 
         public void close() {
-            loopLock.unlock();
+//            loopLock.unlock();
             driver.quit();
         }
 
@@ -71,7 +71,7 @@ public class BrowserThread {
                 e.printStackTrace();
             } finally {
                 try {
-                    loopLock.unlock();
+//                    loopLock.unlock();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -98,13 +98,13 @@ public class BrowserThread {
                 } catch (TimeoutException te) {
                     continue;
                 }
-                if (!loopLock.tryLock()) {
-                    try {
-                        reachedTwitterHomePage.await();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
+//                if (!loopLock.tryLock()) {
+//                    try {
+//                        reachedTwitterHomePage.await();
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                }
             } while (!driver.getCurrentUrl().equals("https://twitter.com/home"));
             // end setup
 
@@ -142,6 +142,7 @@ public class BrowserThread {
 //        }
         BrowserThread.Initialize my = run.new Initialize();
         my.run();
+        run.close();
 
        /* try {
             run = retryUntilIntoTwitter();
