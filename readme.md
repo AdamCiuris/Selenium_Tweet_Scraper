@@ -12,4 +12,6 @@ Name the account name you would like to scrape there, too.
 
 Tweet content will be saved to output.
 
+run ``mvn package`` and run the jar with the artifact id specified in the pom.xml.
+
 note to self: put a download link to jar on personal site
