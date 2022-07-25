@@ -1,0 +1,53 @@
+{
+  "name": "electron_is_bad",
+  "version": "0.0.1",
+  "description": "GUI for my tweet scraper",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron-forge start",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
+  },
+  "keywords": [],
+  "author": "Adam Ciuris",
+  "license": "ISC",
+  "dependencies": {
+    "electron": "^19.0.9"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^6.0.0-beta.64",
+    "@electron-forge/maker-deb": "^6.0.0-beta.64",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.64",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.64",
+    "@electron-forge/maker-zip": "^6.0.0-beta.64",
+    "electron": "^19.0.9"
+  },
+  "config": {
+    "forge": {
+      "packagerConfig": {},
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "my_electron_app"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
+        }
+      ]
+    }
+  }
+}
