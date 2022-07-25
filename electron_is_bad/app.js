@@ -1,6 +1,6 @@
 const { spawn } = require('child_process');
-const netstat = spawn('java', ['-jar', '../target/selesecondgo-1.0-SNAPSHOT.jar']);
-var chgBtn = document.getElementById('pee');
+var chgBtn = document.getElementById('spawn-process');
+var netstat;
 
 function replaceText(selector, text){
     const element = document.getElementById(selector);
@@ -8,19 +8,20 @@ function replaceText(selector, text){
 }    
 
 chgBtn.onclick = function(e) {
-    
+    netstat= spawn('java', ['-jar', '../target/selesecondgo-1.0-SNAPSHOT.jar']);
+    netstat.stdout.on('data', (data) => {
+        console.log(`stdout: ${data}`);
+      });
+      
+      netstat.stderr.on('data', (data) => {
+        console.error(`stderr: ${data}`);
+      });
+      
+      netstat.on('close', (code) => {
+        console.log(`child process exited with code ${code}`);
+      });
+      
 }
 
 
-netstat.stdout.on('data', (data) => {
-  console.log(`stdout: ${data}`);
-});
-
-netstat.stderr.on('data', (data) => {
-  console.error(`stderr: ${data}`);
-});
-
-netstat.on('close', (code) => {
-  console.log(`child process exited with code ${code}`);
-});
 
