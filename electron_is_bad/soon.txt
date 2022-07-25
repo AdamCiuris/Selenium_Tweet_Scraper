@@ -1,1 +1,0 @@
-electron when im ready, gonna do javafx so i can get back to the meat of the program

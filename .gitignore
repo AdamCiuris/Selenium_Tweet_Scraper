@@ -1,3 +1,4 @@
 /output/
 /target/
 /src/main/resources/.env
+/electron_is_bad/node_modules
