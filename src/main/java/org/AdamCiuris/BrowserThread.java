@@ -5,13 +5,18 @@ import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import static java.lang.Integer.parseInt;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 /*
  * ChromeDriver Version: 103.0.5060.24
  * Author: Adam Ciuris
@@ -20,7 +25,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * Dependencies: See pom.xml.
  * */
 public class BrowserThread {
-    public static WebDriver driver;
+    public static WebDriver driver; // TODO make this field a field of the inner class
     private Lock syncThis = new ReentrantLock();
 
 
@@ -31,8 +36,13 @@ public class BrowserThread {
             .load();
 
     class Initialize implements Runnable {
-//        private static Lock loopLock = new ReentrantLock();
-//        private static Condition reachedTwitterHomePage = loopLock.newCondition();
+        private int threadID;
+        Initialize(int threadID) {
+            this.threadID = threadID;
+        }
+        public int getID() {
+            return threadID;
+        }
         /**
          * Instantiates webdriver.
          *
@@ -127,22 +137,24 @@ public class BrowserThread {
 
 
     public static void main(String[] args) {
-        BrowserThread run = new BrowserThread();
-        shutdown(run);
-//
-//        List<String> list = Arrays.asList("1","2","3","4","5","6");
-//        try {
-//            FileWriter test = new FileWriter();
-//            for (String s:
-//            new HashSet<String>(list)) {
-//             test.write(s);
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-        BrowserThread.Initialize my = run.new Initialize();
-        my.run();
-        run.close();
+        int nThreads = 2; // incase jar run without fronted make one thread
+        if (args.length >0) {
+            nThreads = Integer.parseInt(args[0]);
+        }
+        ExecutorService executor = Executors.newFixedThreadPool(nThreads);
+
+        BrowserThread runtime = new BrowserThread(); // TODO: rename
+        ArrayList<Runnable> fu = new ArrayList<>(nThreads);
+        shutdown(runtime);
+
+        BrowserThread .Initialize[] my = new Initialize[nThreads];
+        for (int i = 0; i < nThreads; i++) {
+            my[i] = runtime.new Initialize(i);
+        }
+        for (BrowserThread.Initialize e: my) {
+            executor.execute(e);
+        }
+        runtime.close();
 
        /* try {
             run = retryUntilIntoTwitter();
@@ -171,4 +183,6 @@ public class BrowserThread {
             }
         }, "Shutdown-thread"));
     }
+
+
 }

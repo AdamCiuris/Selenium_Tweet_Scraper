@@ -8,7 +8,7 @@ function replaceText(selector, text){
 }    
 
 chgBtn.onclick = function(e) {
-    netstat= spawn('java', ['-jar', '../target/selesecondgo-1.0-SNAPSHOT.jar']);
+    netstat= spawn('java', ['-jar', '../target/selesecondgo-1.0-SNAPSHOT.jar', '2']);
     netstat.stdout.on('data', (data) => {
         console.log(`stdout: ${data}`);
       });

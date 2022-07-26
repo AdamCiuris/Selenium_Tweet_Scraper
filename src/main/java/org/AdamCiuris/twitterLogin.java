@@ -18,13 +18,16 @@ public class twitterLogin {
         // used to bind to WebElement login
         Boolean staleEle = true;
 
-
+        webWait();
+//        new WebDriverWait(twitter, Duration.ofSeconds(3))
+//                .ignoring(StaleElementReferenceException.class)
+//                .until((WebDriver d) -> {
+//                    d.findElement(By.xpath("//div[@aria-labelledby='button-label']")).click();
+//                    return true;
+//                });
         new WebDriverWait(twitter, Duration.ofSeconds(3))
-                .ignoring(StaleElementReferenceException.class)
-                .until((WebDriver d) -> {
-                    d.findElement(By.xpath("//div[@aria-labelledby='button-label']")).click();
-                    return true;
-                });
+                .until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@aria-labelledby='button-label']"))).click();
+
         /*while (true) {
             try {
                 new WebDriverWait(twitter, Duration.ofSeconds(10)) // unhandled time out in case twitter messes up things
@@ -84,6 +87,11 @@ public class twitterLogin {
         }
     }
 
+
+    private void webWait() {
+        new WebDriverWait(twitter, 30).until((ExpectedCondition<Boolean>) wd ->
+                ((JavascriptExecutor) wd).executeScript("return document.readyState").equals("complete"));
+    }
    /* public static Func<WebDriver, Boolean> UrlToBe(String url)
     {
         return (WebDriver d) -> { return d.Url.ToLowerInvariant().Equals(url.ToLowerInvariant()); };
