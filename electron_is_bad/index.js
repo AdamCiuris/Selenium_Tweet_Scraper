@@ -26,6 +26,11 @@ app.whenReady().then(() => {
 })
 
 app.on("window-all-close", () => {
-    if (process.platform !== "darwin") app.quit();
+    if (process.platform !== "darwin")  {
+        spawn('taskkill', ['/IM', 'chromedriver.exe', '/F']); // force chromedriver to die, I don't know how to naturally end it.
+        // without above chromedriver.exe becomes a zombie process
+
+        app.quit();
+    }
 })
 
