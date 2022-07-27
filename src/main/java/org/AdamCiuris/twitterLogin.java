@@ -5,45 +5,40 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.sql.Time;
 import java.time.Duration;
 import java.util.Iterator;
 import java.util.Set;
 
 public class twitterLogin {
     public WebDriver twitter;
-    public twitterLogin(WebDriver twitter2) {
+    public twitterLogin(WebDriver twitter2, int threadID) {
         this.twitter = twitter2;
         String home = twitter.getWindowHandle();
         twitter.get("https://twitter.com/login");
         // used to bind to WebElement login
         Boolean staleEle = true;
 
-        webWait();
-//        new WebDriverWait(twitter, Duration.ofSeconds(3))
-//                .ignoring(StaleElementReferenceException.class)
-//                .until((WebDriver d) -> {
-//                    d.findElement(By.xpath("//div[@aria-labelledby='button-label']")).click();
-//                    return true;
-//                });
-        new WebDriverWait(twitter, Duration.ofSeconds(3))
-                .until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@aria-labelledby='button-label']"))).click();
-
-        /*while (true) {
+//        webWait();
+        WebElement click;
+        while(true) {
             try {
-                new WebDriverWait(twitter, Duration.ofSeconds(10)) // unhandled time out in case twitter messes up things
+                new WebDriverWait(twitter, Duration.ofSeconds(10))
                         .until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@aria-labelledby='button-label']"))).click();
-                break;
             } catch (StaleElementReferenceException e) {
-                System.out.println("stale");
                 continue;
-                // somehow the element is getting changed so first click is on stale version of it
             } catch (TimeoutException e) {
-                System.out.println("DEBUG TIMEOUT HAPPENED HELPHFELHLEPHPELHHLEP");
-                new WebDriverWait(twitter, Duration.ofSeconds(10)) // unhandled time out in case twitter messes up things
-                        .until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@aria-labelledby='button-label']"))).click();
-
+                // HOW DO I FIX THIS
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        }*/
+            break;
+        }
+//        new WebDriverWait(twitter, Duration.ofSeconds(3))
+//                .until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@aria-labelledby='button-label']"))).click();
+        webWait();
+
         while (true) {
             try {
                 Set<String> handles = twitter.getWindowHandles();
@@ -89,8 +84,12 @@ public class twitterLogin {
 
 
     private void webWait() {
-        new WebDriverWait(twitter, 30).until((ExpectedCondition<Boolean>) wd ->
-                ((JavascriptExecutor) wd).executeScript("return document.readyState").equals("complete"));
+        try {
+            new WebDriverWait(twitter, 30).until((ExpectedCondition<Boolean>) wd ->
+                    ((JavascriptExecutor) wd).executeScript("return document.readyState").equals("complete"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
    /* public static Func<WebDriver, Boolean> UrlToBe(String url)
     {

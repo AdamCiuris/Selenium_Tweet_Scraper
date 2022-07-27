@@ -17,11 +17,15 @@ import java.util.Set;
 public class tweetScraper {
     Dotenv env = Dotenv.load();
     WebDriver scrapeMe;
-    public tweetScraper(WebDriver scrapeMe) {
+    public tweetScraper(WebDriver scrapeMe, int threadID) {
         this.scrapeMe = scrapeMe;
+        String appendMe = Integer.toString(threadID);
+        while (appendMe.length() < 4) {
+            appendMe = "0" + appendMe;
+        }
 
 
-        scrapeMe.get("https://www.twitter.com/"+env.get("account_to_scrape"));
+        scrapeMe.get("https://www.twitter.com/"+env.get("account_to_scrape"+appendMe));
         webWait();
         scrapeMe.navigate().refresh(); // navigating like above logs us out but this refresh logs us back in
         webWait();

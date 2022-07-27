@@ -62,8 +62,8 @@ public class BrowserThread {
          */
         public void gmail() {
             try {
-                new gmailLogin(driver); // should be eligible for garbage collection since not reachable
-                new gmailPassword(driver);
+                new gmailLogin(driver, threadID); // should be eligible for garbage collection since not reachable
+                new gmailPassword(driver, threadID);
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
@@ -76,7 +76,7 @@ public class BrowserThread {
         public void twitter() {
             int test = 0;
             try {
-                new twitterLogin(driver);
+                new twitterLogin(driver, threadID);
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
@@ -91,7 +91,7 @@ public class BrowserThread {
 
         public void scrape() {
             try {
-                new tweetScraper(driver);
+                new tweetScraper(driver, threadID);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -137,7 +137,7 @@ public class BrowserThread {
 
 
     public static void main(String[] args) {
-        int nThreads = 2; // incase jar run without fronted make one thread
+        int nThreads = 2; // incase jar run without frontend make one thread
         if (args.length >0) {
             nThreads = Integer.parseInt(args[0]);
         }
