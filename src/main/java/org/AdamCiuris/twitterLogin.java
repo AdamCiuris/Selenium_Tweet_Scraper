@@ -23,12 +23,22 @@ public class twitterLogin {
         WebElement click;
         while(true) {
             try {
+                int size = twitter.findElements(By.tagName("iframe")).size();
+                System.out.println("iframes: " + size);
+                new WebDriverWait(twitter, Duration.ofSeconds(10))
+                        .until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(By.tagName("iframe"))); // the gmail login is an iframe
+
+                // TODO: the inconsistency of this is beyond what I can solve for now
                 new WebDriverWait(twitter, Duration.ofSeconds(10))
                         .until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@aria-labelledby='button-label']"))).click();
             } catch (StaleElementReferenceException e) {
+                int size = twitter.findElements(By.tagName("iframe")).size();
+                System.out.println("iframes: " + size);
                 continue;
             } catch (TimeoutException e) {
                 // HOW DO I FIX THIS
+                int size = twitter.findElements(By.tagName("iframe")).size();
+                System.out.println("iframes: " + size);
                 e.printStackTrace();
             } catch (Exception e) {
                 e.printStackTrace();

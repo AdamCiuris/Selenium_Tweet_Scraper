@@ -17,8 +17,10 @@ import java.util.Set;
 public class tweetScraper {
     Dotenv env = Dotenv.load();
     WebDriver scrapeMe;
+    int threadID;
     public tweetScraper(WebDriver scrapeMe, int threadID) {
         this.scrapeMe = scrapeMe;
+        this.threadID = threadID;
         String appendMe = Integer.toString(threadID);
         while (appendMe.length() < 4) {
             appendMe = "0" + appendMe;
@@ -78,7 +80,7 @@ public class tweetScraper {
                 ((JavascriptExecutor) wd).executeScript("return document.readyState").equals("complete"));
     }
     private void save(HashSet<String> writeMe) throws IOException {
-        FileWriter fw = new FileWriter();
+        FileWriter fw = new FileWriter(threadID);
         for (String t:writeMe
         ) {
             fw.write(t);

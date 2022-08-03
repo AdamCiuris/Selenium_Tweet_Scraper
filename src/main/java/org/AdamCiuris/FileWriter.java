@@ -13,8 +13,14 @@ public class FileWriter {
     FileOutputStream fos;
     OutputStreamWriter osw;
     BufferedWriter output;
-    public FileWriter() throws IOException {
-        filename = (LocalDateTime.now() + dotenv.get("account_to_scrape") + "BY" + dotenv.get("gmail_login"))
+    int threadID;
+    public FileWriter(int threadID) throws IOException {
+        this.threadID = threadID;
+        String appendMe = Integer.toString(threadID);
+        while (appendMe.length() < 4) {
+            appendMe = "0" + appendMe;
+        }
+        filename = (LocalDateTime.now() + dotenv.get("account_to_scrape"+appendMe) + "BY" + dotenv.get("gmail_login"+appendMe))
                 .replace(':', '.'); // windows can't have : in filenames
         file = new File("output\\"+filename +".txt");
         int count = 0;

@@ -15,8 +15,10 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import static java.lang.Integer.parseInt;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
 /*
  * ChromeDriver Version: 103.0.5060.24
  * Author: Adam Ciuris
@@ -25,7 +27,6 @@ import java.util.concurrent.Executors;
  * Dependencies: See pom.xml.
  * */
 public class BrowserThread {
-    public static WebDriver driver; // TODO make this field a field of the inner class
     private Lock syncThis = new ReentrantLock();
 
 
@@ -36,13 +37,17 @@ public class BrowserThread {
             .load();
 
     class Initialize implements Runnable {
+        public static WebDriver driver; // TODO make this field a field of the inner class
         private int threadID;
+
         Initialize(int threadID) {
             this.threadID = threadID;
         }
+
         public int getID() {
             return threadID;
         }
+
         /**
          * Instantiates webdriver.
          *
@@ -120,25 +125,17 @@ public class BrowserThread {
 
 
             scrape();
-
-
+            driver.close();
 
         } // end inner class Initialize
 
 
-
     }
-
-    public void close() {
-        driver.close();
-    }
-
-
 
 
     public static void main(String[] args) {
         int nThreads = 2; // incase jar run without frontend make one thread
-        if (args.length >0) {
+        if (args.length > 0) {
             nThreads = Integer.parseInt(args[0]);
         }
         ExecutorService executor = Executors.newFixedThreadPool(nThreads);
@@ -147,14 +144,13 @@ public class BrowserThread {
         ArrayList<Runnable> fu = new ArrayList<>(nThreads);
         shutdown(runtime);
 
-        BrowserThread .Initialize[] my = new Initialize[nThreads];
+        BrowserThread.Initialize[] my = new Initialize[nThreads];
         for (int i = 0; i < nThreads; i++) {
             my[i] = runtime.new Initialize(i);
         }
-        for (BrowserThread.Initialize e: my) {
+        for (BrowserThread.Initialize e : my) {
             executor.execute(e);
         }
-        runtime.close();
 
        /* try {
             run = retryUntilIntoTwitter();
@@ -178,8 +174,20 @@ public class BrowserThread {
          * below hook kills the webdriver on program exit
          */
         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+
+            @Override
             public void run() {
-                run.close();
+                String command = "taskkill /IM chromedriver.exe /F"; // cleans up zombie processes
+                ProcessBuilder processBuilder1 = new ProcessBuilder(command.split(" "));
+                try {
+                    Process p1 = processBuilder1.start();
+//                    while (p1.isAlive()) {
+//                        // simple busy wait until done
+//                    }
+                    p1.destroy();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }, "Shutdown-thread"));
     }
