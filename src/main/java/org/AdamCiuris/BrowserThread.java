@@ -181,9 +181,9 @@ public class BrowserThread {
                 ProcessBuilder processBuilder1 = new ProcessBuilder(command.split(" "));
                 try {
                     Process p1 = processBuilder1.start();
-//                    while (p1.isAlive()) {
-//                        // simple busy wait until done
-//                    }
+                    while (p1.isAlive()) {
+                        // simple busy wait until done
+                    }
                     p1.destroy();
                 } catch (Exception e) {
                     e.printStackTrace();

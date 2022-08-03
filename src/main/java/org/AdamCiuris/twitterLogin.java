@@ -17,30 +17,27 @@ public class twitterLogin {
         String home = twitter.getWindowHandle();
         twitter.get("https://twitter.com/login");
         // used to bind to WebElement login
-        Boolean staleEle = true;
-
-//        webWait();
+        webWait();
         WebElement click;
         while(true) {
             try {
                 int size = twitter.findElements(By.tagName("iframe")).size();
                 System.out.println("iframes: " + size);
-                new WebDriverWait(twitter, Duration.ofSeconds(10))
+                new WebDriverWait(twitter, Duration.ofSeconds(3))
                         .until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(By.tagName("iframe"))); // the gmail login is an iframe
 
                 // TODO: the inconsistency of this is beyond what I can solve for now
-                new WebDriverWait(twitter, Duration.ofSeconds(10))
+                new WebDriverWait(twitter, Duration.ofSeconds(3))
                         .until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@aria-labelledby='button-label']"))).click();
             } catch (StaleElementReferenceException e) {
                 int size = twitter.findElements(By.tagName("iframe")).size();
                 System.out.println("iframes: " + size);
                 continue;
             } catch (TimeoutException e) {
-                // HOW DO I FIX THIS
-                int size = twitter.findElements(By.tagName("iframe")).size();
-                System.out.println("iframes: " + size);
                 e.printStackTrace();
+                continue;
             } catch (Exception e) {
+                System.out.println("unknown error in twitter login");
                 e.printStackTrace();
             }
             break;
