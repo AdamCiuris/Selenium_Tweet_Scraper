@@ -30,14 +30,14 @@ public class twitterLogin {
                 new WebDriverWait(twitter, Duration.ofSeconds(3))
                         .until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@aria-labelledby='button-label']"))).click();
             } catch (StaleElementReferenceException e) {
-                int size = twitter.findElements(By.tagName("iframe")).size();
-                System.out.println("iframes: " + size);
+                // try again
                 continue;
             } catch (TimeoutException e) {
+                // try again, always an issue with selenium not detecting the element in the iframe
                 e.printStackTrace();
                 continue;
             } catch (Exception e) {
-                System.out.println("unknown error in twitter login");
+                System.err.println("unknown error in twitter login");
                 e.printStackTrace();
             }
             break;
@@ -50,7 +50,7 @@ public class twitterLogin {
             try {
                 Set<String> handles = twitter.getWindowHandles();
                 handles.remove(home); // removes current window handle
-                twitter.switchTo().window(handles.iterator().next());
+                twitter.switchTo().window(handles.iterator().next()); // switching to gmail login popup
                 System.out.println(twitter.getWindowHandle());
                 break;
             } catch (NoSuchWindowException e) {
