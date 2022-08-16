@@ -134,15 +134,14 @@ public class BrowserThread {
 
 
     public static void main(String[] args) {
-        int nThreads = 2; // incase jar run without frontend make one thread
+        int nThreads = 1; // incase jar run without frontend make one thread
         if (args.length > 0) {
             nThreads = Integer.parseInt(args[0]);
         }
         ExecutorService executor = Executors.newFixedThreadPool(nThreads);
-
         BrowserThread runtime = new BrowserThread(); // TODO: rename
         ArrayList<Runnable> fu = new ArrayList<>(nThreads);
-        shutdown(runtime);
+        shutdown(runtime); // just adds shutdown hook which runs on quit
 
         BrowserThread.Initialize[] my = new Initialize[nThreads];
         for (int i = 0; i < nThreads; i++) {
@@ -163,7 +162,7 @@ public class BrowserThread {
     }
 
     /**
-     * Call to shut down chrome browser.
+     * Call to add shutdown hook for chrome browser.
      *
      * @param millis - time to wait before shutdown
      * @param run    - main thread
